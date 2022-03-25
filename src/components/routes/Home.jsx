@@ -1,15 +1,26 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Home() {
-  function createRoom() {}
+  const navigate = useNavigate();
+  function checkRoomCode(roomCode) {
+    if (roomCode.length !== 6) {
+      return;
+    }
+    navigate(`/room#${roomCode}`);
+  }
   return (
     <div>
-      <button type='button' onClick={() => createRoom()}>
+      <button type='button'>
         <Link to='/room'>Create Room</Link>
       </button>
-      <button>
-        <Link to='/room'>Join Room</Link>
-      </button>
+      <p>Or Join A Room</p>
+      <input
+        type='text'
+        onKeyDown={(e) =>
+          e.key === 'Enter' ? checkRoomCode(e.target.value) : null
+        }
+        placeholder='Enter room code'
+      />
     </div>
   );
 }
