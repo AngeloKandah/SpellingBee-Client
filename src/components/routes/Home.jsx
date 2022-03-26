@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function Home() {
   const navigate = useNavigate();
   function checkRoomCode(roomCode) {
-    if (roomCode.length !== 6) {
+    if (roomCode.length !== 21) {
       return;
     }
     navigate(`/room#${roomCode}`);
