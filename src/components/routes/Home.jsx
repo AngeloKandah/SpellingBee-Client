@@ -1,26 +1,16 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Button, Input } from '@mantine/core';
+import { RoomCode } from '../input';
 
 export default function Home() {
-  const navigate = useNavigate();
-  function checkRoomCode(roomCode) {
-    if (roomCode.length !== 21) {
-      return;
-    }
-    navigate(`/room#${roomCode}`);
-  }
+
   return (
     <div>
-      <button type='button'>
-        <Link to='/room'>Create Room</Link>
-      </button>
+      <Button component={Link} to='/room'>
+        Create Room
+      </Button>
       <p>Or Join A Room</p>
-      <input
-        type='text'
-        onKeyDown={(e) =>
-          e.key === 'Enter' ? checkRoomCode(e.target.value) : null
-        }
-        placeholder='Enter room code'
-      />
+      <RoomCode />
     </div>
   );
 }
