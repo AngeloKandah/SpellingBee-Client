@@ -6,12 +6,12 @@ export default function RoomCodeButton({ hash, clipboard }) {
       onClick={() => clipboard.copy(hash.substring(1))}
       styles={() => ({
         root: {
-          backgroundColor: clipboard.copied ? '#187D42' : '#00acee',
+          backgroundColor: '#00acee',
           border: 0,
-          margin: 0,
-          height: 42,
-          paddingLeft: 20,
-          paddingRight: 20,
+          marginTop: '1rem',
+          marginLeft: '1rem',
+          height: '3rem',
+          width: '10rem',
         },
       })}
     >
