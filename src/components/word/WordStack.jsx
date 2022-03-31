@@ -1,10 +1,10 @@
 import { Box, Center, Stack, Title } from '@mantine/core';
 
-export default function WordStack({ idOfWhosTurn, word, socket }) {
+export default function WordStack({ currentPlayerId, currentWord, socket }) {
   return (
     <Box
       sx={() => ({
-        visibility: idOfWhosTurn !== socket.id ? '' : 'hidden',
+        visibility: currentPlayerId !== socket.id ? '' : 'hidden',
         marginTop: '15vh',
         marginBottom: '15vh',
       })}
@@ -18,7 +18,7 @@ export default function WordStack({ idOfWhosTurn, word, socket }) {
               margin: '2rem',
             })}
           >
-            {word}
+            {currentWord}
           </Title>
           <p>Their guess</p>
         </Stack>

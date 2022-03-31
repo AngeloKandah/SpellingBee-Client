@@ -6,12 +6,12 @@ import { ROOM_CODE_LENGTH } from '../../constants';
 import { RoomCodeButton } from '../buttons';
 import { Players } from '../players';
 import { GuessBox } from '../input';
-import WordStack from '../word/WordStack';
+import { WordStack } from '../word';
 
-export default function Room() {
+export default function Room({ playerName }) {
   const [socket, setSocket] = useState('');
   const [nextTurn, setNextTurn] = useState({});
-  const { word, idOfWhosTurn } = nextTurn;
+  const { currentWord, currentPlayerId } = nextTurn;
 
   const [creatingRoom, setCreatingRoom] = useState(true);
   const [players, setPlayers] = useState([]);
@@ -25,24 +25,24 @@ export default function Room() {
       setTimeout(() => socket.connect(), 5000);
     });
     setSocket(socket);
-    socket.on('nextWord', ({ word, idOfWhosTurn }) => {
-      setNextTurn({ word, idOfWhosTurn });
+    socket.on('nextWord', ({ currentWord, currentPlayerId }) => {
+      setNextTurn({ currentWord, currentPlayerId });
     });
     socket.on('newPlayer', (players) => setPlayers(players));
     if (hash.substring(1).length === ROOM_CODE_LENGTH) {
       socket.emit(
         'joiningRoom',
-        { roomCode: hash.substring(1) },
-        ({ word }) => {
-          setNextTurn({ word });
+        { roomCode: hash.substring(1), playerName },
+        (currentWord) => {
+          setNextTurn({ currentWord });
           setCreatingRoom(false);
         }
       );
       return () => null;
     }
-    socket.emit('createRoom', ({ word, roomCode }) => {
-      setNextTurn({ word, idOfWhosTurn: socket.id });
-      setPlayers([socket.id]);
+    socket.emit('createRoom', { playerName }, ({ currentWord, roomCode }) => {
+      setNextTurn({ currentWord, currentPlayerId: socket.id });
+      setPlayers([{ id: socket.id, playerName }]);
       setHash(roomCode);
       setCreatingRoom(false);
     });
@@ -64,15 +64,15 @@ export default function Room() {
         [
           <RoomCodeButton key={hash} hash={hash} clipboard={clipboard} />,
           <WordStack
-            key={word}
-            idOfWhosTurn={idOfWhosTurn}
-            word={word}
+            key={currentWord}
+            currentPlayerId={currentPlayerId}
+            currentWord={currentWord}
             socket={socket}
           />,
           <GuessBox
             key='guessBox'
-            idOfWhosTurn={idOfWhosTurn}
-            word={word}
+            currentPlayerId={currentPlayerId}
+            currentWord={currentWord}
             socket={socket}
           />,
           <Players key='playerList' players={players} />,

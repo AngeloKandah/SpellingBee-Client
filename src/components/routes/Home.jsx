@@ -1,20 +1,21 @@
 import { Link } from 'react-router-dom';
 import { Button, Center, Input, Stack, Title } from '@mantine/core';
 import { RoomCode } from '../input';
-import { useState } from 'react';
 
-export default function Home() {
-  const [name, setName] = useState('');
+export default function Home({ playerName, setPlayerName }) {
   return (
-    <Center sx={() => ({
-      marginTop: '25vh',
-    })}>
+    <Center
+      sx={() => ({
+        marginTop: '25vh',
+      })}
+    >
       <Stack align='center'>
         <Title>SPELLING BEE</Title>
         <Input
           type='text'
           placeholder='Enter Name'
-          onKeyUp={(e) => setName(e.target.value)}
+          onKeyUp={(e) => setPlayerName(e.target.value)}
+          defaultValue={playerName}
         />
         <Button component={Link} to='/room' state={{ name }}>
           Create Room

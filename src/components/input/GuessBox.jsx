@@ -1,12 +1,12 @@
 import { Box, Center, Input } from '@mantine/core';
 
-export default function GuessBox({ idOfWhosTurn, word, socket }) {
+export default function GuessBox({ currentPlayerId, currentWord, socket }) {
   async function endTurn(e) {
     const attempt = e.target.value
       .match(/\s*\w*/)[0]
       .trim()
       .toLowerCase();
-    socket.emit('endTurn', { attempt, word }, (isCorrect) => {
+    socket.emit('endTurn', { attempt, currentWord }, (isCorrect) => {
       // Make something appear for x amount of seconds about whether they are wrong or right
       console.log(isCorrect);
     });
@@ -16,7 +16,7 @@ export default function GuessBox({ idOfWhosTurn, word, socket }) {
   return (
     <Box
       sx={() => ({
-        visibility: idOfWhosTurn !== socket.id ? 'hidden' : '',
+        visibility: currentPlayerId !== socket.id ? 'hidden' : '',
         marginTop: '15vh',
         marginBottom: '15vh',
       })}
